@@ -5,13 +5,81 @@ public class Minesweeper {
 	static int[][] board;
 	static int height = 5;
 	static int width = 5;
-	static int number_of_mines = 1;
+	static int number_of_mines = 5;
 
 	static Map<String, ArrayList<String>> unsureNodes = new HashMap<String, ArrayList<String>>();
 	static Map<String, ArrayList<String>> mineNodes = new HashMap<String, ArrayList<String>>();
 	static List<String> clearNodes = new ArrayList<String>();
 	static Map<String, Integer> clueNodes = new HashMap<String, Integer>();
 	static Set<String> mineSet = new HashSet<String>();
+	
+	public static void Rule3()
+	{
+		if(unsureNodes.size() <= 1)
+		{
+			return;
+		}
+		Iterator it = unsureNodes.entrySet().iterator();
+		int count = 0;
+		while (it.hasNext()) {
+			Map.Entry key_value_pair = (Map.Entry) it.next();
+			String parent_node = (String) key_value_pair.getKey();
+			ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+			Iterator it_2 = unsureNodes.entrySet().iterator();
+			count++;
+			for (int i=0;i<count;i++)
+			{
+				it_2.next();
+			}
+			System.out.println("Comparing for "+parent_node);
+			while(it_2.hasNext())
+			{
+				Map.Entry key_value_pair_2 = (Map.Entry) it_2.next();
+				String parent_node_2 = (String) key_value_pair_2.getKey();
+				ArrayList<String> child_nodes_2 = (ArrayList<String>) key_value_pair_2.getValue();
+				System.out.println(" with "+parent_node_2);
+				if(child_nodes.size() >= child_nodes_2.size())
+				{
+					if(child_nodes.containsAll(child_nodes_2))
+					{
+						System.out.println("Deleting a few");
+						for (int k =0; k < child_nodes.size();k++)
+						{
+							if(child_nodes_2.contains(child_nodes.get(k)))
+									{
+										child_nodes.remove(k);
+										k--;
+									}
+						}
+						unsureNodes.put(parent_node, child_nodes);
+						int new_clue = clueNodes.get(parent_node)-clueNodes.get(parent_node_2);
+						clueNodes.put(parent_node,new_clue);
+						
+					}
+				}
+				else
+				{
+					if(child_nodes_2.containsAll(child_nodes))
+					{
+						System.out.println("Deleting a few");
+						for (int k =0; k < child_nodes_2.size();k++)
+						{
+							if(child_nodes.contains(child_nodes_2.get(k)))
+									{
+										child_nodes_2.remove(k);
+										k--;
+									}
+						}
+						unsureNodes.put(parent_node_2, child_nodes_2);
+						int new_clue = clueNodes.get(parent_node_2)-clueNodes.get(parent_node);
+						clueNodes.put(parent_node_2,new_clue);
+						
+					}
+				}
+			}
+			
+		}
+	}
 
 	public static int getMineNumber(int i, int j){
 		int count = 0;
@@ -371,6 +439,7 @@ public class Minesweeper {
 		}
 		System.out.println(
 				"Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size() + " nodes");
+		Rule3();
 		markAsMine();
 		makeUnsureSure();
 		Rule2();
@@ -397,6 +466,7 @@ public class Minesweeper {
 				} else {
 					populateUnsureNodes(i, j);
 				}
+				Rule3();
 				markAsMine();
 				makeUnsureSure();
 				Rule2();
@@ -455,6 +525,7 @@ public class Minesweeper {
 						populateUnsureNodes(Integer.parseInt(current_node.split(",")[0]),
 								Integer.parseInt(current_node.split(",")[1]));
 					}
+					Rule3();
 					markAsMine();
 					makeUnsureSure();
 					Rule2();
@@ -510,6 +581,7 @@ public class Minesweeper {
 				} else {
 					populateUnsureNodes(i, j);
 				}
+				Rule3();
 				markAsMine();
 				makeUnsureSure();
 				Rule2();
