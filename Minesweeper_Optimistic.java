@@ -1,11 +1,18 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
-public class Minesweeper {
+public class Minesweeper_Optimistic {
 
 	static int[][] board;
-	static int height = 5;
-	static int width = 5;
-	static int number_of_mines = 1;
+	static int height = 10;
+	static int width = 10;
+	static int number_of_mines = 5;
 
 	static Map<String, ArrayList<String>> unsureNodes = new HashMap<String, ArrayList<String>>();
 	static Map<String, ArrayList<String>> mineNodes = new HashMap<String, ArrayList<String>>();
@@ -13,27 +20,27 @@ public class Minesweeper {
 	static Map<String, Integer> clueNodes = new HashMap<String, Integer>();
 	static Set<String> mineSet = new HashSet<String>();
 
-	public static int getMineNumber(int i, int j){
+	public static int getMineNumber(int i, int j) {
 		int count = 0;
 		if (i - 1 > -1 && j - 1 > -1) {
 			if (board[i - 1][j - 1] == -1)
 				count++;
 		}
 
-		if (i - 1 > -1){
+		if (i - 1 > -1) {
 			if (board[i - 1][j] == -1)
 				count++;
 		}
-		if (i - 1 > -1 && j + 1 < width){
+		if (i - 1 > -1 && j + 1 < width) {
 			if (board[i - 1][j + 1] == -1)
 				count++;
 		}
-		if (j - 1 > -1){
+		if (j - 1 > -1) {
 			if (board[i][j - 1] == -1)
 				count++;
 		}
 
-		if (j + 1 < width){
+		if (j + 1 < width) {
 			if (board[i][j + 1] == -1)
 				count++;
 		}
@@ -43,26 +50,191 @@ public class Minesweeper {
 				count++;
 		}
 
-		if (i + 1 < height){
+		if (i + 1 < height) {
 			if (board[i + 1][j] == -1)
 				count++;
 		}
 
-		if (i + 1 < height && j + 1 < width){
+		if (i + 1 < height && j + 1 < width) {
 			if (board[i + 1][j + 1] == -1)
 				count++;
 		}
 		return count;
 	}
+	
+	static int numberOfUncoveredNeighbours(String node)
+	{
+		int count = 0;
+		int i = Integer.parseInt(node.split(",")[0]);
+		int j = Integer.parseInt(node.split(",")[1]);
+		if (i - 1 > -1 && j - 1 > -1) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i-1)+","+(j-1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
 
-	static void markAsMine(){
+		if (i - 1 > -1) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i-1)+","+(j);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+		if (i - 1 > -1 && j + 1 < width) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i-1)+","+(j+1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+		if (j - 1 > -1) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i)+","+(j-1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+
+		if (j + 1 < width) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i)+","+(j+1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+
+		if (i + 1 < height && j - 1 > -1) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i+1)+","+(j-1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+
+		if (i + 1 < height) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i+1)+","+(j);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+
+		if (i + 1 < height && j + 1 < width) {
+			Iterator it = unsureNodes.entrySet().iterator();
+			String neighbour = (i+1)+","+(j+1);
+			List<String> parent_node_list = new ArrayList<String>();
+			boolean flag = true;
+			while (it.hasNext()) {
+				Map.Entry key_value_pair = (Map.Entry) it.next();
+				String parent_node = (String) key_value_pair.getKey();
+				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
+				if(child_nodes.contains(neighbour) )
+				{
+					flag = false;
+				}
+				}
+			if(!flag && !clueNodes.containsKey(neighbour) && clearNodes.contains(neighbour))
+			{
+				count++;
+			}
+		}
+		return count;
+	}
+
+	static void markAsMine() {
 		Iterator it = unsureNodes.entrySet().iterator();
 		List<String> list_of_parents = new ArrayList<String>();
 		while (it.hasNext()) {
 			Map.Entry key_value_pair = (Map.Entry) it.next();
 			String parent_node = (String) key_value_pair.getKey();
 			ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
-			if (clueNodes.get(parent_node) == child_nodes.size()) {
+			if (numberOfUncoveredNeighbours(parent_node) == child_nodes.size()) {
 				if(child_nodes.size()>0) 
 				{	
 				mineNodes.put(parent_node, child_nodes);
@@ -80,7 +252,7 @@ public class Minesweeper {
 		
 	}
 
-	static void makeUnsureSure(){
+	static void makeUnsureSure() {
 		Iterator it = unsureNodes.entrySet().iterator();
 		List<String> parent_node_list = new ArrayList<String>(); 
 		while (it.hasNext()) {
@@ -107,12 +279,12 @@ public class Minesweeper {
 		}
 	}
 
-	static void populateClue(int i, int j){
+	static void populateClue(int i, int j) {
 		String node = i + "," + j;
 		clueNodes.put(node, getMineNumber(i, j));
 	}
 
-	public static void populateClearNodes(int i, int j){
+	public static void populateClearNodes(int i, int j) {
 		String neighbour_node = "";
 		if (i - 1 > -1 && j - 1 > -1) {
 			neighbour_node = (i - 1) + "," + (j - 1);
@@ -120,103 +292,99 @@ public class Minesweeper {
 				clearNodes.add(neighbour_node);
 		}
 
-		if (i - 1 > -1){
+		if (i - 1 > -1) {
 			neighbour_node = (i - 1) + "," + (j);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
-		if (i - 1 > -1 && j + 1 < width){
+		if (i - 1 > -1 && j + 1 < width) {
 			neighbour_node = (i - 1) + "," + (j + 1);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
-		if (j - 1 > -1){
+		if (j - 1 > -1) {
 			neighbour_node = (i) + "," + (j - 1);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
 
-		if (j + 1 < width){
+		if (j + 1 < width) {
 			neighbour_node = (i) + "," + (j + 1);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
 
-		if (i + 1 < height && j - 1 > -1){
+		if (i + 1 < height && j - 1 > -1) {
 			neighbour_node = (i + 1) + "," + (j - 1);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
 
-		if (i + 1 < height){
+		if (i + 1 < height) {
 			neighbour_node = (i + 1) + "," + (j);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
 
-		if (i + 1 < height && j + 1 < width){
+		if (i + 1 < height && j + 1 < width) {
 			neighbour_node = (i + 1) + "," + (j + 1);
 			if (!clearNodes.contains(neighbour_node))
 				clearNodes.add(neighbour_node);
 		}
 	}
 
-	public static void populateUnsureNodes(int i, int j){
+	public static void populateUnsureNodes(int i, int j) {
 		String node = i + "," + j;
 		String neighbour_node = "";
 		int flag = 0;
-		if (i - 1 > -1 && j - 1 > -1){
+		if (i - 1 > -1 && j - 1 > -1) {
 			neighbour_node = (i - 1) + "," + (j - 1);
-			if (unsureNodes.containsKey(node)){
+			if (unsureNodes.containsKey(node)) {
 				unsureNodes.get(node).add(neighbour_node);
-			} 
-			else{
+			} else {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
-			}	
+			}
+			
 		}
 
-		if (i - 1 > -1){			
+		if (i - 1 > -1) {			
 			neighbour_node = (i - 1) + "," + (j);
 			if (unsureNodes.containsKey(node)) {
 				unsureNodes.get(node).add(neighbour_node);
-			} 
-			else{
+			} else {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
 		}
-		if (i - 1 > -1 && j + 1 < width){
+		if (i - 1 > -1 && j + 1 < width) {
 			neighbour_node = (i - 1) + "," + (j + 1);
 			if (unsureNodes.containsKey(node)) {
 				unsureNodes.get(node).add(neighbour_node);
-			}
-			else{
+			} else {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
 		}
-		if (j - 1 > -1){
+		if (j - 1 > -1) {
 			neighbour_node = (i) + "," + (j - 1);
-			if (unsureNodes.containsKey(node)){
+			if (unsureNodes.containsKey(node)) {
 				unsureNodes.get(node).add(neighbour_node);
-			}
-			else{
+			} else {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
 		}
 
-		if (j + 1 < width){
+		if (j + 1 < width) {
 			neighbour_node = (i) + "," + (j + 1);
 			if (unsureNodes.containsKey(node)) {
 				unsureNodes.get(node).add(neighbour_node);
-			}
-			else{
+			} else {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
@@ -253,75 +421,6 @@ public class Minesweeper {
 				ArrayList<String> new_node_list = new ArrayList<String>();
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
-			}
-		}
-	}
-
-	public static void Rule2() {
-		Iterator it = clueNodes.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry key_value_pair = (Map.Entry) it.next();
-			String node = (String) key_value_pair.getKey();
-			int clue = (Integer) key_value_pair.getValue();
-			int i = Integer.parseInt(node.split(",")[0]);
-			int j = Integer.parseInt(node.split(",")[1]);
-			String neighbour_node = "";
-			int mine_count = 0;
-			if (i - 1 > -1 && j - 1 > -1) {
-				neighbour_node = (i - 1) + "," + (j - 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-
-			if (i - 1 > -1) {
-				neighbour_node = (i - 1) + "," + (j);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-			if (i - 1 > -1 && j + 1 < width) {
-				neighbour_node = (i - 1) + "," + (j + 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-			if (j - 1 > -1) {
-				neighbour_node = (i) + "," + (j - 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-
-			if (j + 1 < width) {
-				neighbour_node = (i) + "," + (j + 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-
-			if (i + 1 < height && j - 1 > -1) {
-				neighbour_node = (i + 1) + "," + (j - 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-
-			if (i + 1 < height) {
-				neighbour_node = (i + 1) + "," + (j);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-
-			if (i + 1 < height && j + 1 < width) {
-				neighbour_node = (i + 1) + "," + (j + 1);
-				if (mineSet.contains(neighbour_node))
-					mine_count++;
-			}
-			if(mine_count == clue){
-				List<String> clear_nodes = unsureNodes.get(node);
-				if(clear_nodes!=null){
-					for(int k=0;k<clear_nodes.size();k++){
-						if(!mineSet.contains(clear_nodes.get(k))){
-							clearNodes.add(clear_nodes.get(k));
-						}
-					}
-					unsureNodes.remove(node);
-				}
 			}
 		}
 	}
@@ -373,7 +472,6 @@ public class Minesweeper {
 				"Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size() + " nodes");
 		markAsMine();
 		makeUnsureSure();
-		Rule2();
 		System.out.println(
 				"Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size() + " nodes");
 
@@ -399,7 +497,6 @@ public class Minesweeper {
 				}
 				markAsMine();
 				makeUnsureSure();
-				Rule2();
 				clearNodes.remove(0);
 				System.out.println("Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size()
 						+ " nodes");
@@ -424,7 +521,7 @@ public class Minesweeper {
 				String parent_node = (String) key_value_pair.getKey();
 				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
 				String current_node = child_nodes.get(0);
-				if(clueNodes.containsKey(current_node) || mineSet.contains(current_node))
+				if(clueNodes.containsKey(current_node)  || mineSet.contains(current_node))
 				{
 					System.out.println("Repeat "+current_node);
 					child_nodes.remove(0);
@@ -442,7 +539,6 @@ public class Minesweeper {
 				int i = Integer.parseInt(current_node.split(",")[0]);
 				int j = Integer.parseInt(current_node.split(",")[1]);
 				if (board[i][j] == -1) {
-					System.out.println("Number of mines uncovered : "+mineSet.size());
 					System.out.println("Game over!!");
 					return;
 				} else {
@@ -457,10 +553,8 @@ public class Minesweeper {
 					}
 					markAsMine();
 					makeUnsureSure();
-					Rule2();
-					if(child_nodes.size()!=0){
+					if(child_nodes.size() != 0)
 						child_nodes.remove(0);
-					}
 					if(child_nodes.isEmpty())
 					{
 						unsureNodes.remove(parent_node);
@@ -512,7 +606,6 @@ public class Minesweeper {
 				}
 				markAsMine();
 				makeUnsureSure();
-				Rule2();
 				System.out.println("Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size()
 						+ " nodes");
 				Iterator it_un = unsureNodes.entrySet().iterator();

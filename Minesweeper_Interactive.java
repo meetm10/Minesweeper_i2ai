@@ -1,10 +1,10 @@
 import java.util.*;
 
-public class Minesweeper {
+public class Minesweeper_Interactive {
 
 	static int[][] board;
-	static int height = 5;
-	static int width = 5;
+	static int height = 4;
+	static int width = 4;
 	static int number_of_mines = 1;
 
 	static Map<String, ArrayList<String>> unsureNodes = new HashMap<String, ArrayList<String>>();
@@ -12,7 +12,9 @@ public class Minesweeper {
 	static List<String> clearNodes = new ArrayList<String>();
 	static Map<String, Integer> clueNodes = new HashMap<String, Integer>();
 	static Set<String> mineSet = new HashSet<String>();
-
+	static Scanner sc = new Scanner(System.in);
+	static int clue = 0;
+	
 	public static int getMineNumber(int i, int j){
 		int count = 0;
 		if (i - 1 > -1 && j - 1 > -1) {
@@ -105,11 +107,6 @@ public class Minesweeper {
 		{
 			unsureNodes.remove(parent_node_list.get(i));
 		}
-	}
-
-	static void populateClue(int i, int j){
-		String node = i + "," + j;
-		clueNodes.put(node, getMineNumber(i, j));
 	}
 
 	public static void populateClearNodes(int i, int j){
@@ -359,12 +356,24 @@ public class Minesweeper {
 
 	public static void main(String args[]) {
 
+		System.out.println("Enter the height of the board");
+		height = sc.nextInt();
+		System.out.println("Enter the width of the board");
+		width = sc.nextInt();
+		System.out.println("Enter the number of mines you want me to find!");
+		number_of_mines = sc.nextInt();
 		int[][] board = generateBoard(height, width, number_of_mines);
 		displayBoard(board, height, width);
-
-		clueNodes.put("0,0", getMineNumber(0, 0));
-
-		if (getMineNumber(0, 0) == 0) {
+		System.out.println("Please use -1 to denote mine");
+		System.out.println("Please tell me something about (0,0). Don't tell me it's a mine :(");
+		clue = sc.nextInt();
+		if (clue == -1)
+		{
+			System.out.println("You are mean!! :/");
+			return;
+		}
+		clueNodes.put("0,0", clue);
+		if (clue == 0) {
 			populateClearNodes(0, 0);
 		} else {
 			populateUnsureNodes(0, 0);
@@ -386,10 +395,12 @@ public class Minesweeper {
 					System.out.println("Repeat "+current_node);
 					continue;
 				}
+				System.out.println("Please tell me something about "+current_node);
+				clue = sc.nextInt();
 				System.out.println("Clear node - " + current_node);
 				int i = Integer.parseInt(current_node.split(",")[0]);
 				int j = Integer.parseInt(current_node.split(",")[1]);
-				int number_of_nearby_mines = getMineNumber(i, j);
+				int number_of_nearby_mines = clue;
 				System.out.println("Next nearby mines - " + number_of_nearby_mines);
 				clueNodes.put(current_node, number_of_nearby_mines);
 				if (number_of_nearby_mines == 0) {
@@ -441,12 +452,14 @@ public class Minesweeper {
 				System.out.println("Unsure node - " + current_node);
 				int i = Integer.parseInt(current_node.split(",")[0]);
 				int j = Integer.parseInt(current_node.split(",")[1]);
-				if (board[i][j] == -1) {
+				System.out.println("Please tell me something about "+current_node);
+				clue = sc.nextInt();
+				if (clue == -1) {
 					System.out.println("Number of mines uncovered : "+mineSet.size());
 					System.out.println("Game over!!");
 					return;
 				} else {
-					int number_of_nearby_mines = getMineNumber(i, j);
+					int number_of_nearby_mines = clue;
 					clueNodes.put(current_node, number_of_nearby_mines);
 					if (number_of_nearby_mines == 0) {
 						populateClearNodes(Integer.parseInt(current_node.split(",")[0]),
@@ -499,10 +512,12 @@ public class Minesweeper {
 				    column = rand.nextInt(width);
 					current_node = row+","+column;
 				}
-				System.out.println("Clear node - " + current_node);
+				System.out.println("Please tell me something about "+current_node);
+				clue = sc.nextInt();
+				System.out.println("Random node - " + current_node);
 				int i = row;
 				int j = column;
-				int number_of_nearby_mines = getMineNumber(i, j);
+				int number_of_nearby_mines = clue;
 				System.out.println("Next nearby mines - " + number_of_nearby_mines);
 				clueNodes.put(current_node, number_of_nearby_mines);
 				if (number_of_nearby_mines == 0) {
