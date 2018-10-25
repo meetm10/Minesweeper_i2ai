@@ -4,10 +4,17 @@ public class Minesweeper {
 
 
 	static int board[][];
+<<<<<<< HEAD
 	static int height = 10;
 	static int width = 10;
 	// static int[][] board = {{0,0,0,0},{0,0,-1,0},{0,0,-1,0},{0,-1,0,0}};
 	static int number_of_mines = 15;
+=======
+	static int height = 16;
+	static int width = 16;
+	// static int[][] board = {{0,0,0,0},{0,0,-1,0},{0,0,-1,0},{0,-1,0,0}};
+	static int number_of_mines = 40;
+>>>>>>> Added Rules 4 and 5
 
 	static Map<String, ArrayList<String>> unsureNodes = new HashMap<String, ArrayList<String>>();
 	static Map<String, ArrayList<String>> mineNodes = new HashMap<String, ArrayList<String>>();
@@ -17,11 +24,45 @@ public class Minesweeper {
 	static Map<String, Double> unvisited = new HashMap<String, Double>(); 
 	
 	public static void Rule5(){
+<<<<<<< HEAD
 		
+=======
+		Iterator it = unvisited.entrySet().iterator();
+		int clue, number_of_unsure_neighbours;
+		double probability;
+		while(it.hasNext())
+		{
+			Map.Entry key_value_pair = (Map.Entry) it.next();
+			String parent_node = (String) key_value_pair.getKey();
+			if(clueNodes.containsKey(parent_node))
+			{	
+			clue = clueNodes.get(parent_node);
+			number_of_unsure_neighbours = unsureNodes.get(parent_node).size();
+			probability = (double)clue/ (double) number_of_unsure_neighbours;
+			}
+			else
+			{
+				probability = (double)(number_of_mines - mineSet.size())/(double)unvisited.size();
+			}			
+			if(unsureNodes.containsKey(parent_node))
+			{
+				List<String> child_nodes = unsureNodes.get(parent_node);
+				for(int i = 0; i<child_nodes.size();i++)
+				{
+					unvisited.put(child_nodes.get(i), probability);
+				}
+			}
+			else
+			{
+				unvisited.put(parent_node, probability);	
+			}
+		}
+>>>>>>> Added Rules 4 and 5
 	}
 
 	public static void Rule4()
 	{
+<<<<<<< HEAD
 		// Iterator it = unsureNodes.entrySet().iterator();
 		// int clue_count = 0;
 		// while (it.hasNext())
@@ -41,6 +82,27 @@ public class Minesweeper {
 		// 		clearNodes.add(node); 
 		// 	}
 		// }
+=======
+		 /*Iterator it = unsureNodes.entrySet().iterator();
+		 int clue_count = 0;
+		 while (it.hasNext())
+		 {	
+		 Map.Entry key_value_pair = (Map.Entry) it.next();
+		 String parent_node = (String) key_value_pair.getKey();
+		 clue_count += clueNodes.get(parent_node);
+		 }
+		 if((number_of_mines - mineSet.size()) == clue_count)
+		 {
+		 	System.out.println("Remaining mines are just "+(number_of_mines - mineSet.size()) +" and clue count is "+clue_count);
+		 	Iterator it_v = unvisited.entrySet().iterator();
+		 	while (it_v.hasNext())
+		 	{
+		 		Map.Entry key_value_pair_v = (Map.Entry) it_v.next();
+		 		String node = (String)key_value_pair_v.getKey();
+		 		unvisited.put(node, 0.0); 
+		 	}
+		 }*/
+>>>>>>> Added Rules 4 and 5
 	}
 
 	public static void Rule3()
@@ -61,14 +123,19 @@ public class Minesweeper {
 			{
 				it_2.next();
 			}
-			System.out.println("Comparing for "+parent_node);
+		//	System.out.println("Comparing for "+parent_node);
 			while(it_2.hasNext())
 			{
 				Map.Entry key_value_pair_2 = (Map.Entry) it_2.next();
 				String parent_node_2 = (String) key_value_pair_2.getKey();
 				ArrayList<String> child_nodes_2 = (ArrayList<String>) key_value_pair_2.getValue();
+<<<<<<< HEAD
 				System.out.println(" with "+parent_node_2);
 				System.out.println("Comparing "+child_nodes+"with "+child_nodes_2);
+=======
+			//	System.out.println(" with "+parent_node_2);
+			//	System.out.println("Comparing "+child_nodes+"with "+child_nodes_2);
+>>>>>>> Added Rules 4 and 5
 				if(child_nodes.size() >= child_nodes_2.size())
 				{
 					if(child_nodes.containsAll(child_nodes_2))
@@ -287,7 +354,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}	
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+			//unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 
 		if (i - 1 > -1){			
@@ -300,7 +371,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 		if (i - 1 > -1 && j + 1 < width){
 			neighbour_node = (i - 1) + "," + (j + 1);
@@ -312,7 +387,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 		if (j - 1 > -1){
 			neighbour_node = (i) + "," + (j - 1);
@@ -324,7 +403,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 
 		if (j + 1 < width){
@@ -337,7 +420,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 
 		if (i + 1 < height && j - 1 > -1) {
@@ -349,7 +436,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 
 		if (i + 1 < height) {
@@ -361,7 +452,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 
 		if (i + 1 < height && j + 1 < width) {
@@ -373,7 +468,11 @@ public class Minesweeper {
 				new_node_list.add(neighbour_node);
 				unsureNodes.put(node, new_node_list);
 			}
+<<<<<<< HEAD
 			unvisited.remove(neighbour_node);
+=======
+//			unvisited.remove(neighbour_node);
+>>>>>>> Added Rules 4 and 5
 		}
 	}
 
@@ -504,6 +603,10 @@ public class Minesweeper {
 		makeUnsureSure();
 		Rule2();
 		Rule4();
+<<<<<<< HEAD
+=======
+		Rule5();
+>>>>>>> Added Rules 4 and 5
 		System.out.println(
 				"Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size() + " nodes");
 
@@ -533,6 +636,10 @@ public class Minesweeper {
 				makeUnsureSure();
 				Rule2();
 				Rule4();
+<<<<<<< HEAD
+=======
+				Rule5();
+>>>>>>> Added Rules 4 and 5
 				clearNodes.remove(0);
 				System.out.println("Clear node has - " + clearNodes.size() + "; Unsure node has - " + unsureNodes.size()
 						+ " nodes");
@@ -550,6 +657,7 @@ public class Minesweeper {
 								"Unsure nodes- " + child_nodes_un.get(q) + " and the parent is " + parent_node_un);
 					}
 				}
+<<<<<<< HEAD
 			} else if(!unsureNodes.isEmpty()){
 				// Rule3();
 				// markAsMine();
@@ -557,25 +665,38 @@ public class Minesweeper {
 				// Rule2();
 				System.out.println("Querying unsure nodes");
 				Iterator it = unsureNodes.entrySet().iterator();
+=======
+			} else {
+				System.out.println("Querying non clear nodes");
+				Iterator it = unvisited.entrySet().iterator();
+>>>>>>> Added Rules 4 and 5
 				Map.Entry key_value_pair = (Map.Entry) it.next();
-				String parent_node = (String) key_value_pair.getKey();
-				ArrayList<String> child_nodes = (ArrayList<String>) key_value_pair.getValue();
-				String current_node = child_nodes.get(0);
-				if(clueNodes.containsKey(current_node) || mineSet.contains(current_node))
+				double min_probability = (Double) key_value_pair.getValue();
+				double max_probability = (Double) key_value_pair.getValue();
+				String current_node = (String) key_value_pair.getKey();
+				while(it.hasNext())
 				{
-					System.out.println("Repeat "+current_node);
-					child_nodes.remove(0);
-					if(child_nodes.isEmpty())
-					{
-						unsureNodes.remove(parent_node);
+					key_value_pair = (Map.Entry) it.next();
+					String parent_node = (String) key_value_pair.getKey();
+					if( (Double) key_value_pair.getValue() < min_probability)
+					{	
+						min_probability = (Double) key_value_pair.getValue();
+						current_node = parent_node;
 					}
+<<<<<<< HEAD
 					else
 					{
 						unsureNodes.put(parent_node, child_nodes);
+=======
+					if( (Double) key_value_pair.getValue() > max_probability)
+					{	
+						max_probability = (Double) key_value_pair.getValue();
+						current_node = parent_node;
+>>>>>>> Added Rules 4 and 5
 					}
-					continue;
-				}
-				System.out.println("Unsure node - " + current_node);
+				}		
+				System.out.println("Max probability "+max_probability);
+				System.out.println("Unsure node - " + current_node + " probability "+min_probability);
 				int i = Integer.parseInt(current_node.split(",")[0]);
 				int j = Integer.parseInt(current_node.split(",")[1]);
 				if (board[i][j] == -1) {
@@ -598,6 +719,7 @@ public class Minesweeper {
 					makeUnsureSure();
 					Rule2();
 					Rule4();
+<<<<<<< HEAD
 					if(child_nodes.size()!=0){
 						child_nodes.remove(0);
 					}
@@ -609,6 +731,9 @@ public class Minesweeper {
 					{
 						unsureNodes.put(parent_node, child_nodes);
 					}
+=======
+					Rule5();					
+>>>>>>> Added Rules 4 and 5
 					System.out.println("Clear node has - " + clearNodes.size() + "; Unsure node has - "
 							+ unsureNodes.size() + " nodes");
 					Iterator it_un = unsureNodes.entrySet().iterator();
@@ -627,6 +752,7 @@ public class Minesweeper {
 					}
 				}
 			}
+<<<<<<< HEAD
 			
 			else
 			{
@@ -683,6 +809,8 @@ public class Minesweeper {
 					}
 				}
 			}
+=======
+>>>>>>> Added Rules 4 and 5
 		}
 		System.out.println("All mines found!");
 
